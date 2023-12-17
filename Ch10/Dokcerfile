@@ -1,0 +1,16 @@
+# Dockerfile
+FROM python:3.8-slim
+
+RUN apt-get -q update && apt-get -q install -y wget # wget 명령어 설치
+
+COPY ./server.py ./ # local 개발 환경에 있는 파일을 가상 환경으로 복사
+COPY ./requirements.txt ./
+
+RUN wget -q https://raw.githubusercontent.com/All4Nothing/pytorch-DL-project/Ch10/convnet.pth
+RUN wget -q https://github.com/wikibook/All4Nothing/raw/main/Ch10/digit_image.jpg
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+
+USER root # docker client에 root 권한 부여
+ENTRYPOINT ["python", "server.py"]
